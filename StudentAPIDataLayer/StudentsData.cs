@@ -1,29 +1,10 @@
-﻿using Microsoft.Data.SqlClient;
-using System;
+﻿using System;
 using System.Data;
-
-
-
+using Microsoft.Data.SqlClient;
 
 
 namespace StudentDataAccessLayer
 {
-    public class StudentDTO
-    {
-        public StudentDTO (int Id, string Name, int Age, int Grade)
-        {
-            this.Id = Id;
-            this.Name = Name;   
-            this.Age = Age;
-            this.Grade = Grade; 
-        }
-
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int Age { get; set; }
-        public int Grade { get; set; }
-
-    }
 
     public class StudentsData
     {
@@ -197,23 +178,21 @@ namespace StudentDataAccessLayer
         { 
             try
             {
-                using (SqlConnection Connection = new SqlConnection(ConnectionString))
+                using SqlConnection Connection = new SqlConnection(ConnectionString);
+                using (SqlCommand Command = new SqlCommand("SP_UpdateStudent", Connection))
                 {
-                    using (SqlCommand Command = new SqlCommand("SP_UpdateStudent", Connection))
-                    {
-                        /*@Name, @Age, @Grade*/
-                        Command.CommandType = CommandType.StoredProcedure;
+                    /*@Name, @Age, @Grade*/
+                    Command.CommandType = CommandType.StoredProcedure;
 
-                        Command.Parameters.AddWithValue("@StudentId", SDTO.Id);
-                        Command.Parameters.AddWithValue("@Name", SDTO.Name);
-                        Command.Parameters.AddWithValue("@Age", SDTO.Age);
-                        Command.Parameters.AddWithValue("@Grade", SDTO.Grade);
+                    Command.Parameters.AddWithValue("@StudentId", SDTO.Id);
+                    Command.Parameters.AddWithValue("@Name", SDTO.Name);
+                    Command.Parameters.AddWithValue("@Age", SDTO.Age);
+                    Command.Parameters.AddWithValue("@Grade", SDTO.Grade);
 
-                        Connection.Open();
-                        Command.ExecuteNonQuery();
-                        return true;
+                    Connection.Open();
+                    Command.ExecuteNonQuery();
+                    return true;
 
-                    }
                 }
             }
             catch (Exception ex)
