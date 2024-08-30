@@ -1,4 +1,7 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StudentApi.Authorization;
+using StudentApi.Data;
 using StudentAPIBusinessLayer;
 using StudentDataAccessLayer;
 using System.Collections.Generic;
@@ -7,15 +10,16 @@ using System.Collections.Generic;
 namespace StudentApi.Controllers
 {
     [ApiController]
-    [Route("api/Students")]
-
+    [Route("Students")]
+    [Authorize]
     public class StudentsController : ControllerBase
     {
 
         [HttpGet("All", Name = "GetAllStudents")]
-
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+
+        [CheckPermission(Permission.ReadStudent)]
         public ActionResult<IEnumerable<StudentDTO>> GetAllStudents()
         {
 
@@ -31,6 +35,7 @@ namespace StudentApi.Controllers
         [HttpGet("Passed", Name = "GetPassedStudents")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [CheckPermission(Permission.ReadStudent)]
         public ActionResult<IEnumerable<StudentDTO>> GetPassedStudents()
         {
 
@@ -63,6 +68,7 @@ namespace StudentApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [CheckPermission(Permission.ReadStudent)]
         public ActionResult<StudentDTO> GetStudent(int id)
         {
             if (id < 1)
@@ -82,6 +88,7 @@ namespace StudentApi.Controllers
         [HttpPost("AddStudent",Name = "AddStudent")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [CheckPermission(Permission.AddStudent)]
         public ActionResult<StudentDTO> AddStudent(StudentDTO newStudentDTO)
         {
             if (newStudentDTO == null || string.IsNullOrEmpty(newStudentDTO.Name) || newStudentDTO.Age < 0 || newStudentDTO.Grade < 0)
@@ -100,6 +107,7 @@ namespace StudentApi.Controllers
         [HttpPut("{id}",Name = "UpdateStudent")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [CheckPermission(Permission.EditStudent)]
         public ActionResult<StudentDTO> UpdateStudent(int id, StudentDTO UpdateStudentDTO)
         {
             if (id < 1 || UpdateStudentDTO == null || string.IsNullOrEmpty(UpdateStudentDTO.Name) || UpdateStudentDTO.Age < 0 || UpdateStudentDTO.Grade < 0)
@@ -126,6 +134,8 @@ namespace StudentApi.Controllers
         //[ProducesResponseType(StatusCodes.Status200OK)]
         //[ProducesResponseType(StatusCodes.Status400BadRequest)]
         //[ProducesResponseType(StatusCodes.Status404NotFound)]
+        //[CheckPermission(Permission.DeleteStudent)]
+
         //public ActionResult DeleteStudent(int id)
         //{
         //    if (id < 1)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 
 
 namespace StudentDataAccessLayer
@@ -10,7 +11,8 @@ namespace StudentDataAccessLayer
     {
 
         static string ConnectionString = "Server=localhost;Database=StudentsDB;User Id=sa;Password=123456;Encrypt=False;TrustServerCertificate=True;Connection Timeout=30;";
-        
+
+
         public static List<StudentDTO> GetAllStudent()
         {
             var studentList = new List<StudentDTO>();
