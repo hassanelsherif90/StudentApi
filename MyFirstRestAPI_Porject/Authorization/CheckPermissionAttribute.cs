@@ -2,6 +2,8 @@
 
 namespace StudentApi.Authorization
 {
+   //"هنا للحصول على وظيفة الفحص "
+
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public class CheckPermissionAttribute : Attribute
     {

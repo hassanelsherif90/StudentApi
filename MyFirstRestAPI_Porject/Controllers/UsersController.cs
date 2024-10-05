@@ -29,16 +29,18 @@ namespace StudentApi.Controllers
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-
                 Issuer = jwtOptions.Issuer,
                 Audience = jwtOptions.Audience,
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SigningKey)),
-                SecurityAlgorithms.HmacSha256),
+                SigningCredentials = new SigningCredentials
+                (
+                    new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SigningKey)),
+                    SecurityAlgorithms.HmacSha256  
+                ),
+
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString() ),
                     new Claim(ClaimTypes.Name, user.UserName)
-
                 })
 
             };
